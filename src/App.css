@@ -1,0 +1,12 @@
+.App {
+  padding-left: 30px;
+  text-align: left;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items:baseline;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
