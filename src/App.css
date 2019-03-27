@@ -1,12 +1,40 @@
 .App {
-  padding-left: 30px;
+  padding: 30px;
   text-align: left;
-  background-color: #282c34;
+  background-color: #FFFFFF;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items:baseline;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: black;
+}
+
+.book-shelf {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.book {
+  height: 150px;
+  width: 110px;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.search-bar {
+  padding-bottom: 30px;
+}
+
+.search-results {
+  position: absolute;
+  display: block;
+  background-color: white;
+}
+
+button {
+  background-color: inherit;
+  color: inherit;
+  border: none;
 }
