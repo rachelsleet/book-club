@@ -2,7 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const googleAPI = "https://www.googleapis.com/books/v1/volumes?langRestrict=en&q="
+const googleAPI = "https://www.googleapis.com/books/v1/volumes?langRestrict=en&q=";
+const stockImage = "https://images.unsplash.com/photo-1549758225-5835373bcbc3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=738&q=80";
 
 class App extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ const Book = (props) => {
   console.log(props);
   return (
     <div className = "book">
-      <img src={props.data.volumeInfo.imageLinks.thumbnail} alt={props.data.volumeInfo.title}/>
+      <img src={Object.keys(props.data.volumeInfo).includes("imageLinks") ? props.data.volumeInfo.imageLinks.thumbnail : stockImage} alt={props.data.volumeInfo.title}/>
     </div>
   )
 }
@@ -106,7 +107,12 @@ class SearchBar extends React.Component {
     console.log('displaying results');
     this.setState({
       searchResultsToDisplay: results.items.map(item => {
-        return `${item["volumeInfo"]["title"]}, by ${item["volumeInfo"]["authors"]}`
+        if (Object.keys(item.volumeInfo).includes("imageLinks")) {
+          return [`${item["volumeInfo"]["title"]}, by ${item["volumeInfo"]["authors"]}`,item.volumeInfo.imageLinks.smallThumbnail]
+        }
+        else {
+          return [`${item["volumeInfo"]["title"]}, by ${item["volumeInfo"]["authors"]}`,stockImage]
+        }
       }),
       searchResultsFull: results.items.map(item => {
         return item.id
@@ -131,7 +137,7 @@ class SearchBar extends React.Component {
         <input type="submit" value="Search"/>
       </form>
       <div className="search-results">
-       <ul>{this.state.searchResultsToDisplay.map((result,index) => <li><button type="button" id={index} onClick={this.handleSelection}>{result}</button></li>)}</ul>
+       <ul>{this.state.searchResultsToDisplay.map((result,index) => <li><img src={result[1]} className="thumbnail"/><button type="button" id={index} onClick={this.handleSelection}>{result[0]}</button></li>)}</ul>
       </div>
       </div>
     )

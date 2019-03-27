@@ -23,6 +23,14 @@
   padding: 20px;
 }
 
+.thumbnail {
+  width: 30px;
+}
+
+ul {
+  list-style: none;
+}
+
 .search-bar {
   padding-bottom: 30px;
 }
