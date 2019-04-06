@@ -1,0 +1,141 @@
+@import url('https://use.fontawesome.com/releases/v5.8.1/css/solid.css');
+
+.App {
+  padding: 30px;
+  text-align: left;
+  background-color: #FFFFFF;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items:baseline;
+  color: black;
+  font-size: 20px;
+}
+
+.expanded-view {
+  text-align: left;
+  display: grid;
+  grid-column-gap: 10px;
+  grid-template-columns: 150px auto;
+  background-color: lightpink;
+  padding: 10px;
+  max-height: 200px;
+  max-width: 700px;
+}
+
+.expanded-view > .description {
+  grid-column: 2;
+  grid-row: 2;
+  max-height: 150px;
+  overflow: scroll;
+}
+
+.expanded-view > .thumbnail {
+  grid-column: 1;
+  grid-row: 1/4;
+  overflow: hidden;
+}
+
+.expanded-view > h3 {
+  grid-column: 2;
+  grid-row: 1;
+}
+.expanded-view > .add-button {
+  grid-column: 2;
+  grid-row: 3;
+  height: 20px;
+  text-align: left;
+
+
+}
+
+.book-shelf {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.book-cover {
+  height: 160px;
+  width: 120px;
+  padding: 10px;
+  font-size: 14px;
+  transition-duration: 0.5s;
+  float: left;
+}
+
+img {
+  width: 120px;
+}
+h3{
+    padding: 0px;
+    margin: 0px;
+}
+.book-full {
+  height: 160px;
+  width: 350px;
+  padding: 10px;
+  font-size: 14px;
+  transition-duration: 0.5s;
+  float: left;
+  overflow: hidden;
+}
+
+.blurb {
+  overflow: scroll;
+  height: 160px;
+  opacity: 1;
+  transition: opacity 2s;
+  padding-left: 10px
+}
+
+.cover {
+  height: 160px;
+  float: left;
+  overflow: hidden;
+}
+
+ul {
+  list-style: none;
+}
+
+.search-bar {
+  padding-bottom: 30px;
+  padding-top: 10px;
+}
+
+.search-results {
+  position: absolute;
+  display: block;
+  background-color: white;
+  margin-top: 10px;
+}
+
+ul {
+  margin-left: -40px;
+}
+
+button {
+  background-color: inherit;
+  color: inherit;
+  border: none;
+  font-size: 15px;
+  transition-duration: 0.5s;
+}
+
+input {
+  font-size: 15px;
+}
+
+.add-button {
+  color: white;
+
+}
+
+.submit {
+  color:hotpink;
+  background-color: inherit;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+}
