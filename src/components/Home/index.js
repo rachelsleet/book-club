@@ -1,4 +1,5 @@
 import React from 'react';
+import { withAuthorization } from '../Session';
 
 const googleAPI = "https://www.googleapis.com/books/v1/volumes?langRestrict=en&q=";
 const stockImage = "https://images.unsplash.com/photo-1549758225-5835373bcbc3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=738&q=80";
@@ -193,5 +194,13 @@ class Bookshelf extends React.Component { // receives books array as props
   
   }
   
+  const HomePage = () => (
+    <div>
+      <h1>Home Page</h1>
+      <Home />
+    </div>
+  )
 
-export default Home;
+  const condition = authUser => !!authUser;
+
+export default withAuthorization(condition)(HomePage);
