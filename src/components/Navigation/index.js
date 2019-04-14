@@ -18,6 +18,9 @@ const NavigationAuth = () => (
   <div className = "topnav">
     <ul>
         <li>
+            <Link to={ROUTES.LANDING}>Landing</Link>
+        </li>
+        <li>
             <Link to={ROUTES.HOME}>Home</Link>
         </li>
         <li>
