@@ -1,8 +1,7 @@
 import React from 'react';
 import { withAuthorization } from '../Session';
 //import { withFirebase } from '../Firebase';
-import GroupPage from '../Group';
-import GroupFinder from '../GroupFinder';
+import GroupPage from '../GroupPage';
 
 class Home extends React.Component {
     constructor(props) {
@@ -21,9 +20,7 @@ class Home extends React.Component {
         const { group } = this.state;
 
         return(
-            <div className="App">
-                {group ? <GroupPage group="group"/> : <GroupFinder />}
-            </div>
+            < GroupPage/>
         )
         
     }
