@@ -40,6 +40,18 @@ class Firebase {
   // **** Current User session ****
 
   getCurrentUser = () => this.auth.currentUser;
+
+  // ***** Group API ******
+
+  groups = () => this.db.ref(`groups`);
+
+  newGroupKey = () =>
+    this.db
+      .ref()
+      .child("groups")
+      .push().key;
+
+  group = gid => this.db.ref(`groups/${gid}`);
 }
 
 export default Firebase;
