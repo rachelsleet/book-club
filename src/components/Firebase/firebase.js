@@ -1,6 +1,6 @@
-import app from "firebase/app";
-import "firebase/auth";
-import "firebase/database";
+import app from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/database';
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -37,6 +37,8 @@ class Firebase {
 
   users = () => this.db.ref(`users`);
 
+  userGroups = uid => this.db.ref(`users/${uid}/groups`);
+
   // **** Current User session ****
 
   getCurrentUser = () => this.auth.currentUser;
@@ -48,7 +50,7 @@ class Firebase {
   newGroupKey = () =>
     this.db
       .ref()
-      .child("groups")
+      .child('groups')
       .push().key;
 
   group = gid => this.db.ref(`groups/${gid}`);

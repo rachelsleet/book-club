@@ -16,37 +16,29 @@ class GroupFormBase extends Component {
   };
 
   createNewGroup = event => {
-    console.log(this.state.name);
     const gid = this.props.firebase.newGroupKey();
     const uid = this.props.firebase.getCurrentUser().uid;
 
-    let members = {};
-    const books = {};
+    let members = [uid]; // Current user is the first and only member of the group
     const { name } = this.state;
-    // Current user is the first and only member of the group
+
+    // write new group entry to database
     this.props.firebase
-      .users()
-      .once("value", data => {
-        data.forEach(child => {
-          if (uid === child.key) {
-            members[child.key] = true;
-          } else {
-            members[child.key] = false;
-          }
-        });
-        // return members;
-      })
-      .then(() => {
-        this.props.firebase.group(gid).set({
-          name,
-          members,
-          books
-        });
+      .group(gid)
+      .set({
+        name,
+        members
       })
       .then(console.log("Group successfully created"))
       .catch(error => console.log(error));
 
-    // write new group entry to database
+    // add group id to user's list of groups
+
+    if (this.props.firebase.user(uid).groups) {
+      this.props.firebase.user(uid).groups.push(gid);
+    } else {
+      this.props.firebase.user(uid).update({ groups: [gid] });
+    }
 
     event.preventDefault();
   };
