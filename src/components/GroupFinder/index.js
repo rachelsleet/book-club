@@ -11,7 +11,7 @@ class GroupFinder extends Component {
     return (
       <div>
         <p>
-          Join or <Link to={ROUTES.GROUP_FORM}>create a group!</Link>
+          Join or <Link to={ROUTES.GROUP_FORM}>create</Link> a group!
         </p>
         <h2>Available Groups</h2>
         <ul>
