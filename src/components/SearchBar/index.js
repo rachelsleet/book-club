@@ -83,15 +83,17 @@ class SearchBar extends Component {
   displayResults(result, index) {
     let volumeInfo = result.volumeInfo;
     let shortView = (
-      <h3>
-        {volumeInfo.title}, by {volumeInfo.authors}
-      </h3>
+      <button type='button' id={index} onClick={this.expandSelection}>
+        {volumeInfo.title},{' '}
+        {volumeInfo.authors ? `by ${volumeInfo.authors.join(`, `)}` : ``}
+      </button>
     );
     let expandedView = (
       <div className='expanded-view'>
-        <h3>
-          {volumeInfo.title}, by {volumeInfo.authors}
-        </h3>
+        <button type='button' id={index} onClick={this.expandSelection}>
+          {volumeInfo.title},{' '}
+          {volumeInfo.authors ? `by ${volumeInfo.authors.join(`, `)}` : ``}
+        </button>
         <button
           id={result.id}
           type='button'
@@ -100,29 +102,29 @@ class SearchBar extends Component {
         >
           Add to bookshelf
         </button>
-        {Object.keys(volumeInfo).includes('imageLinks') ? (
+        {/*Object.keys(volumeInfo).includes('imageLinks') ? (
           <div className='thumbnail'>
             <img src={volumeInfo.imageLinks.thumbnail} alt={volumeInfo.title} />
           </div>
         ) : (
           ''
-        )}
+        )*/}
         <div className='description'>
           <p>
             {volumeInfo.description
               ? volumeInfo.description
-              : 'No description avail'}
+              : 'No description available'}
           </p>
         </div>
       </div>
     );
     return (
       <li>
-        <button type='button' id={index} onClick={this.expandSelection}>
+        <div>
           {this.state.currentlyExpanded === index.toString()
             ? expandedView
             : shortView}
-        </button>
+        </div>
       </li>
     );
   }
@@ -141,7 +143,9 @@ class SearchBar extends Component {
             value={this.inputValue}
             onChange={this.handleInput}
           />
-          <input type='submit' value='[Search]' className='submit' />
+          <button type='submit' value='[Search]' className='submit'>
+            Submit
+          </button>
         </form>
         <div className='search-results'>
           {this.state.resultsCount ? (
