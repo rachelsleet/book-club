@@ -1,71 +1,75 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
+import { withAuthorization } from '../Session';
 
-class AdminPage extends Component {
-    constructor(props) {
-        super(props);
+class AdminPageBase extends Component {
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            loading: false,
-            users: [],
-        }
-    }
+    this.state = {
+      loading: false,
+      users: []
+    };
+  }
 
-    componentDidMount() {
-        this.setState({ loading: true });
+  componentDidMount() {
+    this.setState({ loading: true });
 
-        this.props.firebase.users().on('value', snapshot => {
-            const usersObject = snapshot.val();
+    this.props.firebase.users().on('value', snapshot => {
+      const usersObject = snapshot.val();
 
-            const usersList = Object.keys(usersObject).map(key => ({
-                ...usersObject[key],
-                uid: key,
-            }));
+      const usersList = Object.keys(usersObject).map(key => ({
+        ...usersObject[key],
+        uid: key
+      }));
 
-            this.setState({
-                loading: false,
-                users: usersList,
-            });
-        });
-    }
-    
-    componentWillUnmount() {
-        this.props.firebase.users().off();
-    }
+      this.setState({
+        loading: false,
+        users: usersList
+      });
+    });
+  }
 
+  componentWillUnmount() {
+    this.props.firebase.users().off();
+  }
 
-    render() {
-        const { users, loading } = this.state;
+  render() {
+    const { users, loading } = this.state;
 
-        return (
-            <div>
-                <h1>Admin</h1>
+    return (
+      <div>
+        <h1>Admin</h1>
 
-                {loading && <div>Loading...</div>}
-                <UserList users={users} />
-            </div>
-        )
-    }
+        {loading && <div>Loading...</div>}
+        <UserList users={users} />
+      </div>
+    );
+  }
 }
 
 const UserList = ({ users }) => (
-    <ul>
-        {users.map(user => {
-            return (
-                <li key={user.uid}>
-                    <span>
-                        <strong>ID:</strong> {user.uid}
-                    </span>
-                    <span>
-                        <strong>E-Mail:</strong> {user.email}
-                    </span>
-                    <span>
-                        <strong>Username:</strong> {user.username}
-                    </span>
-                </li>
-            )
-        })}
-    </ul>
-)
+  <ul>
+    {users.map(user => {
+      return (
+        <li key={user.uid}>
+          <span>
+            <strong>ID:</strong> {user.uid}
+          </span>
+          <span>
+            <strong>E-Mail:</strong> {user.email}
+          </span>
+          <span>
+            <strong>Username:</strong> {user.username}
+          </span>
+        </li>
+      );
+    })}
+  </ul>
+);
 
-export default withFirebase(AdminPage);
+const condition = authUser => !!authUser;
+
+const AdminPage = withFirebase(AdminPageBase);
+
+export default withAuthorization(condition)(AdminPage);

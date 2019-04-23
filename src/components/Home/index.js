@@ -10,6 +10,7 @@ class HomeBase extends React.Component {
     super(props);
     this.state = {
       user: '',
+      username: '',
       selectedGroup: ''
     };
     this.selectGroup = this.selectGroup.bind(this);
@@ -25,6 +26,16 @@ class HomeBase extends React.Component {
 
   componentWillMount() {
     const uid = this.props.firebase.getCurrentUser().uid;
+
+    this.props.firebase
+      .user(uid)
+      .once('value')
+      .then(snapshot =>
+        this.setState({
+          username: snapshot.val().username
+        })
+      );
+
     this.setState({
       user: uid
     });
@@ -42,6 +53,10 @@ class HomeBase extends React.Component {
     } else {
       return (
         <div>
+          <h1>
+            Welcome back, {this.state.username ? this.state.username : ``}
+          </h1>
+
           <UserGroups
             firebase={this.props.firebase}
             user={user}
@@ -162,7 +177,6 @@ class AvailableGroups extends Component {
 
 const HomePage = () => (
   <div>
-    <h1>Clubs</h1>
     <Home />
   </div>
 );

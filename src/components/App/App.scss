@@ -95,4 +95,11 @@ form {
   p {
     margin-left: 5px;
   }
+  button {
+    text-align: left;
+  }
+}
+
+li > button {
+  margin-left: -5px;
 }

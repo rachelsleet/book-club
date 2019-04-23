@@ -119,7 +119,7 @@ class SearchBar extends Component {
       </div>
     );
     return (
-      <li>
+      <li key={index}>
         <div>
           {this.state.currentlyExpanded === index.toString()
             ? expandedView
