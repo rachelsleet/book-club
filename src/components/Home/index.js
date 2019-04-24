@@ -11,7 +11,8 @@ class HomeBase extends React.Component {
     this.state = {
       user: '',
       username: '',
-      selectedGroup: ''
+      selectedGroup: '',
+      selectedGid: ''
     };
     this.selectGroup = this.selectGroup.bind(this);
   }
@@ -19,7 +20,8 @@ class HomeBase extends React.Component {
   selectGroup = event => {
     console.log(event.target.name);
     this.setState({
-      selectedGroup: event.target.name
+      selectedGroup: event.target.className,
+      selectedGid: event.target.name
     });
     event.preventDefault();
   };
@@ -42,12 +44,12 @@ class HomeBase extends React.Component {
   }
 
   render() {
-    const { user, selectedGroup } = this.state;
+    const { user, username, selectedGroup, selectedGid } = this.state;
     if (selectedGroup) {
       return (
         <div>
           <p>Group selected: {selectedGroup} </p>
-          <Group group={selectedGroup} />
+          <Group gid={selectedGid} />
         </div>
       );
     } else {
@@ -66,7 +68,8 @@ class HomeBase extends React.Component {
             firebase={this.props.firebase}
             selectGroup={this.selectGroup}
           />
-
+          <br />
+          <br />
           <Link to={ROUTES.GROUP_FORM}>Create a new group</Link>
         </div>
       );
@@ -127,6 +130,7 @@ class UserGroups extends Component {
                     <button
                       key={this.state.gids[index]}
                       name={this.state.gids[index]}
+                      className={group}
                       onClick={this.props.selectGroup}
                     >
                       {group}

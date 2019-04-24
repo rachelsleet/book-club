@@ -11,24 +11,42 @@ class GroupBase extends Component {
     };
     this.addToBookShelf = this.addToBookShelf.bind(this);
   }
-  /*
+
   componentWillMount() {
     //const uid = this.props.firebase.getCurrentUser().uid;
-    //const gid = this.props.group;
+    const gid = this.props.gid;
+    // WILL CONTAIN BOOK SHELF FETCHING FROM DATABASE
     this.props.firebase.db
-            .ref(`users/${uid}/groups/0`)
-            .limitToFirst(1)
-            .once('value')
-            .then(data => data.val()) //this.props.firebase.user(uid).groups["0"]
-
+      .ref(`groups/${gid}/books`)
+      .once('value')
+      .then(snapshots => {
+        let books = [];
+        snapshots.forEach(snapshot => {
+          books.push(snapshot.val());
+        });
+        return books;
+      })
+      .then(books => {
+        this.setState({
+          bookShelf: [...books]
+        });
+      })
+      .then(console.log(this.state.bookShelf))
+      .catch(error => console.log(error));
     //console.log(uid, gid);
-  }*/
+  }
 
   addToBookShelf(book) {
     // triggered by selecting a search result from the SearchBar component
     this.setState({
       bookShelf: [...this.state.bookShelf, book]
     });
+    // save book in group
+    const gid = this.props.gid;
+
+    this.props.firebase.db
+      .ref(`groups/${gid}/books/${book.id}`)
+      .set({ ...book });
   }
 
   render() {
