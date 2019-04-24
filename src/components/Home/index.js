@@ -14,17 +14,7 @@ class HomeBase extends React.Component {
       selectedGroup: '',
       selectedGid: ''
     };
-    this.selectGroup = this.selectGroup.bind(this);
   }
-
-  selectGroup = event => {
-    console.log(event.target.name);
-    this.setState({
-      selectedGroup: event.target.className,
-      selectedGid: event.target.name
-    });
-    event.preventDefault();
-  };
 
   componentWillMount() {
     const uid = this.props.firebase.getCurrentUser().uid;
@@ -44,36 +34,18 @@ class HomeBase extends React.Component {
   }
 
   render() {
-    const { user, username, selectedGroup, selectedGid } = this.state;
-    if (selectedGroup) {
-      return (
-        <div>
-          <p>Group selected: {selectedGroup} </p>
-          <Group gid={selectedGid} />
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <h1>
-            Welcome back, {this.state.username ? this.state.username : ``}
-          </h1>
+    const { user, username } = this.state;
+    return (
+      <div>
+        <h1>Welcome back, {this.state.username ? this.state.username : ``}</h1>
 
-          <UserGroups
-            firebase={this.props.firebase}
-            user={user}
-            selectGroup={this.selectGroup}
-          />
-          <AvailableGroups
-            firebase={this.props.firebase}
-            selectGroup={this.selectGroup}
-          />
-          <br />
-          <br />
-          <Link to={ROUTES.GROUP_FORM}>Create a new group</Link>
-        </div>
-      );
-    }
+        <UserGroups firebase={this.props.firebase} user={user} />
+        <AvailableGroups firebase={this.props.firebase} />
+        <br />
+        <br />
+        <Link to={ROUTES.GROUP_FORM}>Create a new group</Link>
+      </div>
+    );
   }
 }
 
@@ -127,14 +99,15 @@ class UserGroups extends Component {
             ? this.state.groups.map((group, index) => {
                 return (
                   <li key={index}>
-                    <button
-                      key={this.state.gids[index]}
-                      name={this.state.gids[index]}
-                      className={group}
-                      onClick={this.props.selectGroup}
+                    <Link
+                      to={{
+                        pathname: '/group',
+                        state: { gid: this.state.gids[index], group: group },
+                        hash: `${group}`
+                      }}
                     >
                       {group}
-                    </button>
+                    </Link>
                   </li>
                 );
               })
@@ -149,6 +122,7 @@ class AvailableGroups extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      gids: [],
       groups: []
     };
   }
@@ -158,9 +132,12 @@ class AvailableGroups extends Component {
       .groups()
       .once('value')
       .then(snapshot => {
-        snapshot.forEach(group =>
-          this.setState({ groups: [...this.state.groups, group.val().name] })
-        );
+        snapshot.forEach(group => {
+          this.setState({
+            gids: [...this.state.gids, group.key],
+            groups: [...this.state.groups, group.val().name]
+          });
+        });
       })
       .catch(error => console.log(error));
   }
@@ -168,11 +145,28 @@ class AvailableGroups extends Component {
   render() {
     return (
       <div>
-        <h3>Available Clubs</h3>
+        <h3>All Clubs</h3>
         <ul>
-          {this.state.groups.map(group => {
-            return <li key={group}>{group}</li>;
-          })}
+          {this.state.groups
+            ? this.state.groups.map((group, index) => {
+                return (
+                  <li key={index}>
+                    <Link
+                      to={{
+                        pathname: '/group',
+                        state: {
+                          gid: this.state.gids[index],
+                          group: group
+                        },
+                        hash: `${group}`
+                      }}
+                    >
+                      {group}
+                    </Link>
+                  </li>
+                );
+              })
+            : '...Loading'}
         </ul>
       </div>
     );

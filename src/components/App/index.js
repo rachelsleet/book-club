@@ -11,6 +11,7 @@ import PasswordForgetPage from '../PasswordForget';
 import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
+import Group from '../Group';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
@@ -32,6 +33,7 @@ const App = props => {
         <Route path={ROUTES.ACCOUNT} component={AccountPage} />
         <Route path={ROUTES.ADMIN} component={AdminPage} />
         <Route path={ROUTES.GROUP_FORM} component={GroupForm} />
+        <Route path={ROUTES.GROUP_PAGE} component={Group} />
       </Router>
     </div>
   );
