@@ -1,11 +1,13 @@
-import React, { Component } from "react";
-import { withFirebase } from "../Firebase";
+import React, { Component } from 'react';
+import { withFirebase } from '../Firebase';
+import * as ROUTES from '../../constants/routes';
+import { withRouter } from 'react-router-dom';
 
 class GroupFormBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: ""
+      name: ''
     };
   }
 
@@ -29,7 +31,10 @@ class GroupFormBase extends Component {
         name,
         members
       })
-      .then(console.log("Group successfully created"))
+      .then(new_user => {
+        console.log('Group successfully created');
+        this.props.history.push(ROUTES.HOME);
+      })
       .catch(error => console.log(error));
 
     // add group id to user's list of groups
@@ -47,21 +52,21 @@ class GroupFormBase extends Component {
     return (
       <div>
         <p>New Group</p>
-        <form onSubmit={this.createNewGroup} autoComplete="off">
+        <form onSubmit={this.createNewGroup} autoComplete='off'>
           <input
-            type="text"
-            name="name"
+            type='text'
+            name='name'
             value={this.name}
             onChange={this.handleChange}
-            placeholder="Enter name here"
+            placeholder='Enter name here'
           />
-          <button type="submit">Submit</button>
+          <button type='submit'>Submit</button>
         </form>
       </div>
     );
   }
 }
 
-const GroupForm = withFirebase(GroupFormBase);
+const GroupForm = withRouter(withFirebase(GroupFormBase));
 
 export default GroupForm;
