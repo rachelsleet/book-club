@@ -14,7 +14,7 @@ class GroupBase extends Component {
 
   componentWillMount() {
     //const uid = this.props.firebase.getCurrentUser().uid;
-    const { gid, group } = this.props.location.state;
+    const gid = this.props.location.state.gid;
     // WILL CONTAIN BOOK SHELF FETCHING FROM DATABASE
     this.props.firebase.db
       .ref(`groups/${gid}/books`)
@@ -42,7 +42,7 @@ class GroupBase extends Component {
       bookShelf: [...this.state.bookShelf, book]
     });
     // save book in group
-    const { gid, group } = this.props.location.state;
+    const gid = this.props.location.state.gid;
 
     this.props.firebase.db
       .ref(`groups/${gid}/books/${book.id}`)

@@ -20,13 +20,13 @@ class GroupFormBase extends Component {
   createNewGroup = event => {
     const gid = this.props.firebase.newGroupKey();
     const uid = this.props.firebase.getCurrentUser().uid;
+    const newGroupPath = this.props.firebase.group(gid);
 
-    let members = [uid]; // Current user is the first and only member of the group
+    let members = {}; // Current user is the first and only member of the group
     const { name } = this.state;
 
     // write new group entry to database
-    this.props.firebase
-      .group(gid)
+    newGroupPath
       .set({
         name,
         members
@@ -37,13 +37,16 @@ class GroupFormBase extends Component {
       })
       .catch(error => console.log(error));
 
-    // add group id to user's list of groups
+    this.props.firebase.db
+      .ref(`groups/${gid}/members`)
+      .child(uid)
+      .set(true);
 
-    if (this.props.firebase.user(uid).groups) {
-      this.props.firebase.user(uid).groups.push(gid);
-    } else {
-      this.props.firebase.user(uid).update({ groups: [gid] });
-    }
+    // add group id to user's list of groups
+    this.props.firebase.db
+      .ref(`users/${uid}/groups/`)
+      .child(gid)
+      .set(true);
 
     event.preventDefault();
   };
@@ -51,7 +54,7 @@ class GroupFormBase extends Component {
   render() {
     return (
       <div>
-        <p>New Group</p>
+        <h2>Pick a Name</h2>
         <form onSubmit={this.createNewGroup} autoComplete='off'>
           <input
             type='text'
