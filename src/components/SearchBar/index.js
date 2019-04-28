@@ -31,6 +31,9 @@ class SearchBar extends Component {
   handleSubmit(e) {
     e.preventDefault(); // prevents the page refreshing with every button submit
     this.getBookResults(this.state.userInputValue);
+    this.setState({
+      currentlyExpanded: ''
+    });
   }
 
   getBookResults(query) {
@@ -44,13 +47,17 @@ class SearchBar extends Component {
         console.log(data);
         this.updateResults(data);
       });
+    this.setState({
+      currentlyExpanded: ''
+    });
   }
 
   updateResults(results) {
     console.log(results);
     this.setState({
       searchResultsFull: results.items,
-      resultsCount: results.totalItems
+      resultsCount: results.totalItems,
+      currentlyExpanded: ''
     });
   }
 
@@ -76,7 +83,8 @@ class SearchBar extends Component {
 
     this.setState({
       searchResultsFull: [],
-      resultsCount: ''
+      resultsCount: '',
+      currentlyExpanded: ''
     });
   }
 

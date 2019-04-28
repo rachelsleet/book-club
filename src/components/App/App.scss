@@ -103,3 +103,33 @@ form {
 li > button {
   margin-left: -5px;
 }
+
+.book-shelf {
+  display: flex;
+  flex-wrap: wrap;
+  .book-cover,
+  .book-full,
+  .cover {
+    height: 150px;
+    float: left;
+    border: 2px solid white;
+    overflow: hidden;
+  }
+  .book-cover:hover,
+  .book-full:hover,
+  .cover:hover {
+    border: 2px solid #ff5394;
+  }
+  .book-full {
+    height: 150px;
+    width: 450px;
+    overflow: hidden;
+  }
+  .blurb {
+    padding-left: 10px;
+    width: 300px;
+    height: 150px;
+    float: left;
+    overflow: scroll;
+  }
+}

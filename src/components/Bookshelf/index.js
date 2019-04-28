@@ -9,7 +9,9 @@ const Bookshelf = props => {
     <div className='book-shelf'>
       {props.books[0]
         ? props.books.map(book => {
-            return <Book data={book} />;
+            return (
+              <Book data={book} key={book.id} removeBook={props.removeBook} />
+            );
           })
         : 'Your shelf is empty!'}
     </div>
@@ -22,11 +24,15 @@ class Book extends React.Component {
 
     let volumeInfo = this.props.data.volumeInfo;
 
-    let blurbContent = `<i class="fas fa-times"></i><h3>${volumeInfo.title}${
+    let blurbContent = `<h3>${volumeInfo.title}${
       volumeInfo.subtitle ? ` -<br>${volumeInfo.subtitle}` : ''
     }</h3><h4>by ${volumeInfo.authors}</h4><br>Publication date: ${
       volumeInfo.publishedDate
-    }<br><br>${volumeInfo.description}`;
+    }<br><br>${
+      volumeInfo.description
+        ? volumeInfo.description
+        : 'No description available'
+    }`;
 
     let coverDiv = (
       <div className='cover'>
@@ -44,6 +50,13 @@ class Book extends React.Component {
     let coverAndBlurbDiv = (
       <div>
         {coverDiv}
+        <button
+          onClick={this.props.removeBook}
+          className='remove-book'
+          value={this.props.data.id}
+        >
+          Remove
+        </button>
         <div
           className='blurb'
           dangerouslySetInnerHTML={{ __html: blurbContent }}

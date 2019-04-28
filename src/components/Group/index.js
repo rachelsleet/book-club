@@ -10,29 +10,22 @@ class GroupBase extends Component {
       bookShelf: [] // books stored here
     };
     this.addToBookShelf = this.addToBookShelf.bind(this);
+    this.removeBook = this.removeBook.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     //const uid = this.props.firebase.getCurrentUser().uid;
     const gid = this.props.location.state.gid;
     // WILL CONTAIN BOOK SHELF FETCHING FROM DATABASE
-    this.props.firebase.db
-      .ref(`groups/${gid}/books`)
-      .once('value')
-      .then(snapshots => {
-        let books = [];
-        snapshots.forEach(snapshot => {
-          books.push(snapshot.val());
-        });
-        return books;
-      })
-      .then(books => {
-        this.setState({
-          bookShelf: [...books]
-        });
-      })
-      .then(console.log(this.state.bookShelf))
-      .catch(error => console.log(error));
+    this.props.firebase.db.ref(`groups/${gid}/books`).on('value', snapshots => {
+      let books = [];
+      snapshots.forEach(snapshot => {
+        books.push(snapshot.val());
+      });
+      this.setState({
+        bookShelf: [...books]
+      });
+    });
     //console.log(uid, gid);
   }
 
@@ -49,12 +42,21 @@ class GroupBase extends Component {
       .set({ ...book });
   }
 
+  removeBook(event) {
+    console.log('clicked');
+    const gid = this.props.location.state.gid;
+    const bid = event.target.value;
+
+    this.props.firebase.db.ref(`groups/${gid}/books/${bid}`).remove();
+    event.preventDefault();
+  }
+
   render() {
     return (
       <div>
         <h2>Club selected: {this.props.location.state.group}</h2>
         <SearchBar addBookToShelf={this.addToBookShelf} />
-        <Bookshelf books={this.state.bookShelf} />
+        <Bookshelf books={this.state.bookShelf} removeBook={this.removeBook} />
       </div>
     );
   }
