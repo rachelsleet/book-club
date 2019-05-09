@@ -7,10 +7,12 @@ class GroupBase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookShelf: [] // books stored here
+      bookShelf: [], // books stored here
+      toggleView: true
     };
     this.addToBookShelf = this.addToBookShelf.bind(this);
     this.removeBook = this.removeBook.bind(this);
+    this.toggleView = this.toggleView.bind(this);
   }
 
   componentDidMount() {
@@ -32,7 +34,8 @@ class GroupBase extends Component {
   addToBookShelf(book) {
     // triggered by selecting a search result from the SearchBar component
     this.setState({
-      bookShelf: [...this.state.bookShelf, book]
+      bookShelf: [...this.state.bookShelf, book],
+      toggleView: true
     });
     // save book in group
     const gid = this.props.location.state.gid;
@@ -40,6 +43,12 @@ class GroupBase extends Component {
     this.props.firebase.db
       .ref(`groups/${gid}/books/${book.id}`)
       .set({ ...book });
+  }
+
+  toggleView() {
+    this.setState({
+      toggleView: !this.state.toggleView
+    });
   }
 
   removeBook(event) {
@@ -55,8 +64,19 @@ class GroupBase extends Component {
     return (
       <div>
         <h2>Club selected: {this.props.location.state.group}</h2>
-        <SearchBar addBookToShelf={this.addToBookShelf} />
-        <Bookshelf books={this.state.bookShelf} removeBook={this.removeBook} />
+        <button className='toggle-shelf' onClick={this.toggleView}>
+          {this.state.toggleView
+            ? `Search for more books`
+            : `Back to Bookshelf`}
+        </button>
+        {this.state.toggleView ? (
+          <Bookshelf
+            books={this.state.bookShelf}
+            removeBook={this.removeBook}
+          />
+        ) : (
+          <SearchBar addBookToShelf={this.addToBookShelf} />
+        )}
       </div>
     );
   }

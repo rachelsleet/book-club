@@ -84,7 +84,8 @@ class SearchBar extends Component {
     this.setState({
       searchResultsFull: [],
       resultsCount: '',
-      currentlyExpanded: ''
+      currentlyExpanded: '',
+      userInputValue: ''
     });
   }
 
